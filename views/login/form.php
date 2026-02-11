@@ -6,8 +6,8 @@
 
     if($tombol){
             $_SESSION['status']='OKE';
-            header('Location:../index.php');
-            exit;
+            header('Location:index.php');
+           
         }
 ?>
 

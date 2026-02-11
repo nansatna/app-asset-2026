@@ -1,15 +1,16 @@
 <?php 
-
+error_reporting(0);
 session_start();
-$_SESSION['status']='oke';
-//session_destroy();
+
 
 if($_SESSION['status']!=''){
-    header('Location: views/dashboard.php');
-    exit;
+    include("cores/component.php");
+    include("cores/data.php");
+    include('views/dashboard.php');
+    
 }else{
-    header('Location: views/login.php');
-    exit;
+    include('views/login.php');
+    
 }
 
 ?>
