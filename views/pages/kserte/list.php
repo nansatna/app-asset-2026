@@ -7,7 +7,7 @@
 
     $BtnAksi = AksiDropdown(
         [
-            ["", "?pg=$pg&fl=form&ak=edit", "pencil", "Edit"],
+            ["", "?pg=$pg&fl=form&ak=edit&id=xxxx", "pencil", "Edit"],
             ["print", "#", "printer", "Cetak", "", "cetakDariFile('nosabaraha','surat')"],
             ["hr"],
             ["hapus", "#", "trash-2", "Hapus", "danger", "konfirmasiHapus('?pg=Kaset&fl=list&aksi=hapus&id=XXXXX')"]

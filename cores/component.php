@@ -2,7 +2,7 @@
     function button($var="",$val="",$warna="",$icon="",$attbr="")
     {
         return <<<button
-            <button type="submit" name="$var" value="$val" class="btn btn-$warna fw-bold py-2 shadow-sm" style="border:none;" $attbr>
+            <button type="submit" name="$var" value="$val" class="btn btn-$warna fw-bold shadow-sm" style="border:none; white-space: nowrap;" $attbr>
                 <i data-lucide="$icon" style="width:18px" class="me-1"></i> $val
             </button>
         button;
