@@ -6,8 +6,28 @@
 
     if($tombol)
     {
-        $_SESSION['status']='OKE';
-        header('Location:index.php'); 
+        
+        $quser = selectData($koneksiku, 'pegawai', ['Username' => $user]);
+
+        if(!empty($quser))
+        {
+            if(password_verify($pwd,$quser['Sandi']))
+            {
+                $_SESSION['status']='OKE';
+                header('Location:index.php'); 
+            }
+            else
+            {
+                $pesan = "Maaf password anda salah";
+            }
+            
+        }
+        else
+        {
+            $pesan = "Maaf username tidak ditemukan";
+        }
+
+        
     }
 
     // $user=$_POST['user']?? '';

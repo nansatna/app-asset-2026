@@ -20,6 +20,6 @@
 
             <input type="submit" class="btn btn-login w-100" value="Sign in" name="tombol" />
         </form>
-        <?= $error_message ?>
+        <?= $pesan ?>
     </div>
 </div>
