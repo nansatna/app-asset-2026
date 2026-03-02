@@ -1,36 +1,25 @@
-<?php
-
-    $user=$_POST['user']?? '';
-    $pwd=$_POST['pwd'] ?? '';
-    $tombol=$_POST['tombol'] ?? '';
-
-    if($tombol){
-            $_SESSION['status']='OKE';
-            header('Location:index.php');
-           
-        }
-?>
-
 <div class="col-lg-6 login-form-section">
-            <div class="form-wrapper">
-                <div class="brand-icon">
-                    <i class="bi bi-hexagon-fill"></i>
-                </div>
-                <h2 class="fw-bold text-dark mb-2">Masuk ke Akun</h2>
-                <p class="text-muted mb-4">Selamat datang kembali! Silakan masukkan detail Anda.</p>
-
-                <form method="post">
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">username</label>
-                        <input type="text" class="form-control" placeholder="username" name="user">
-                    </div>
-                    
-                    <div class="mb-3">  
-                            <label class="form-label small fw-bold text-secondary">Password</label>
-                        <input type="password" class="form-control" placeholder="minimal 8 karakter" name="pwd">
-                    </div>
-
-                    <input type="submit" class="btn btn-login w-100" value="Sign in" name="tombol" />
-                </form>
+    <div class="form-wrapper">
+        <div class="brand-icon">
+            <center><img src="images/<?= $logo ?>" width="100"></center>
+        </div>
+        <div class='text-center'>
+            <h2 class="fw-bold text-dark mb-2">Masuk ke Akun</h2>
+            <p class="text-muted mb-4">Selamat datang kembali! Silakan masukkan detail Anda</p>
+        </div>
+        <form method="post" autocomplete="off">
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-secondary">Username</label>
+                <input type="text" class="form-control" name="user">
             </div>
+            
+            <div class="mb-3">  
+                    <label class="form-label small fw-bold text-secondary">Password</label>
+                <input type="password" class="form-control" name="pwd">
+            </div>
+
+            <input type="submit" class="btn btn-login w-100" value="Sign in" name="tombol" />
+        </form>
+        <?= $error_message ?>
+    </div>
 </div>

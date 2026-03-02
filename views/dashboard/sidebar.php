@@ -11,8 +11,8 @@
 
 <aside id="sidebar">
     <div class="sidebar-header">
-        <div class="brand-logo"><i data-lucide="command"></i></div>
-        <span class="brand-text">MenSet</span>
+        <div class="brand-logo"><img src="images/<?= $logo ?>" width="50"></div>
+        <span class="brand-text"><?= $AppNameShort ?></span>
     </div>
 
     <div class="d-flex flex-column flex-grow-1 overflow-auto custom-scrollbar">
