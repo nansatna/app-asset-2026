@@ -25,12 +25,11 @@
                 $simpan = insertData($koneksiku, 'pegawai', $dataBaru);
                 if($simpan){
                     setAlert("SimpanBerhasil");
+                    header("location:index.php?pg=$pg&fl=$fl&ak=$ak&id=$id");
+                    exit();
                 }else{
-                    setAlert("SimpanGagal");
+                    showAlertGagal("SimpanGagal");
                 }
-                
-                header("location:index.php?pg=$pg&fl=$fl&ak=$ak&id=$id");
-                exit();
 
             break;
             case "edit":
@@ -49,12 +48,12 @@
 
                 if($simpan){
                     setAlert("SimpanBerhasil");
+                    header("location:index.php?pg=$pg&fl=$fl&ak=$ak&id=$id");
+                    exit();
                 }else{
-                    setAlert("SimpanGagal");
+                    showAlertGagal("SimpanGagal");
                 }
                 
-                header("location:index.php?pg=$pg&fl=$fl&ak=$ak&id=$id");
-                exit();
             break;
         }
     }

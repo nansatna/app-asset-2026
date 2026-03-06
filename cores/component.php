@@ -287,4 +287,39 @@
         }
     }
 
+    //Alert Gagal
+    function showAlertGagal($Jenis = null)
+    {
+        $daftar = [
+            "SimpanGagal" => ["error", "Gagal!", "Data gagal disimpan"],
+            "HapusGagal"  => ["warning", "Gagal Hapus", "Data tidak dapat dihapus"]
+        ];
+
+        // Cek apakah Jenis yang diminta ada di dalam daftar
+        if (isset($daftar[$Jenis])) {
+            // Ambil data dari sub-array berdasarkan kunci $Jenis
+            $icon  = $daftar[$Jenis][0];
+            $title = $daftar[$Jenis][1];
+            $text  = $daftar[$Jenis][2];
+
+            // Tentukan konfigurasi tombol/timer
+            $config = ($icon == 'success') 
+                    ? "timer: 2000, showConfirmButton: false" 
+                    : "showConfirmButton: true, confirmButtonColor: '#3085d6'";
+
+            echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: '$icon',
+                        title: '$title',
+                        text: '$text',
+                        $config
+                    });
+                });
+            </script>";
+        }
+    }
+
 ?>
