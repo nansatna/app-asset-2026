@@ -1,33 +1,38 @@
 <?php
     // echo password_hash('1234', PASSWORD_DEFAULT);
     //$2y$10$b4ImlfzP1zEibaoy8P5gNulF1kIhrAGDJ970an16lLaiqf0L9rDZu
-    $user=$_POST['user']?? '';
-    $pwd=$_POST['pwd'] ?? '';
-    $tombol=$_POST['tombol'] ?? '';
+    $user = inputPost('user');
+    $pwd = inputPost('pwd');
+    $tombol = inputPost('tombol');
 
     if($tombol)
     {
-        
-        $quser = selectData($koneksiku, 'pegawai', ['Username' => $user]);
+        $QUser = selectData($koneksiku, 'pegawai', ['Username' => $user]);
+        $DtUser = $QUser[0];
 
-        if(!empty($quser))
+        if(!empty($QUser) && $QUser[0]['Username'] === $user)
         {
-            if(password_verify($pwd,$quser[0]['Sandi']))
+            if(password_verify($pwd,$DtUser['Sandi']))
             {
-                $_SESSION['status']='OKE';
-                header('Location:index.php'); 
+                $_SESSION['IdUser']=$DtUser['IdPegawai'];
+                $_SESSION['Status']='OKE';
+                setAlert("LoginBerhasil");
+                header('Location:index.php');
+                exit();
             }
             else
             {
-                $pesan = "Maaf password anda salah";
+                setAlert("LoginGagal");
+                header("Location: index.php");
+                exit();
             }
             
         }
         else
         {
-            $pesan = "Maaf username tidak ditemukan";
+            setAlert("LoginGagal");
+            header("Location: index.php");
+            exit();
         }
-
-        
     }
 ?>

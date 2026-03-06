@@ -228,4 +228,63 @@
             <iframe id="frameCetak" name="frameCetak" style="display:none;"></iframe>
         d;
     }
+
+    
+    function inputPost($key, $default = '') {
+        return isset($_POST[$key]) ? trim($_POST[$key]) : $default;
+    }
+
+    function inputGet($key, $default = '') {
+        return isset($_GET[$key]) ? trim($_GET[$key]) : $default;
+    }
+
+
+    //Fungsi Alert
+    function setAlert($Jenis = null) {
+        $daftar = [
+            "LoginGagal"     => ["error", "Login Gagal", "Username atau Password salah!"],
+            "LoginBerhasil"  => ["success", "Login berhasil", "Selamat Datang pengguna"],
+            "SimpanBerhasil" => ["success", "Berhasil!", "Data telah disimpan"],
+            "SimpanGagal"    => ["error", "Gagal!", "Data gagal disimpan"],
+            "HapusBerhasil"  => ["success", "Terhapus!", "Data berhasil dihapus"],
+            "HapusGagal"     => ["warning", "Gagal Hapus", "Data tidak dapat dihapus"]
+        ];
+
+        if (isset($daftar[$Jenis])) {
+            // Simpan data array ke session
+            $_SESSION['flash_alert'] = [
+                'icon'  => $daftar[$Jenis][0],
+                'title' => $daftar[$Jenis][1],
+                'text'  => $daftar[$Jenis][2]
+            ];
+        }
+    }
+
+    //Menampilkan Alert
+    function showAlert() {
+        if (isset($_SESSION['flash_alert'])) {
+            $data = $_SESSION['flash_alert'];
+            $icon  = $data['icon'];
+            $title = $data['title'];
+            $text  = $data['text'];
+            
+            // Logika timer otomatis untuk sukses
+            $timer = ($icon == 'success') ? "timer: 2000, showConfirmButton: false," : "showConfirmButton: true, confirmButtonColor: '#3085d6',";
+
+            echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                Swal.fire({
+                    icon: '$icon',
+                    title: '$title',
+                    text: '$text',
+                    $timer
+                });
+            </script>";
+
+            // HAPUS SESSION SETELAH DITAMPILKAN
+            unset($_SESSION['flash_alert']);
+        }
+    }
+
 ?>

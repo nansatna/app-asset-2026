@@ -6,14 +6,39 @@
        buttonhref("?pg=$pg&fl=form&ak=tambah","Tambah","primary","circle-plus","")
     );
 
-    $Aksi = AksiDropdown(
-        [
-            ["","?pg=$pg&fl=form&ak=edit&id=xxx", "pencil", "Edit"],
-            ["","?pg=$pg&fl=reset&id=xxxx", "key", "Reset"],
-            ["hr"],
-            ["hapus","#", "trash-2", "Hapus", "danger","konfirmasiHapus('?pg=Kaset&fl=list&ak=hapus&id=XXXXX')"]
-        ]
-    );
+    foreach ($semuaUser as $row) {
+        $Aksi = AksiDropdown(
+            [
+                ["","?pg=$pg&fl=form&ak=edit&id={$row['IdPegawai']}", "pencil", "Edit"],
+                ["","?pg=$pg&fl=reset&id={$row['IdPegawai']}", "key", "Reset"],
+                ["hr"],
+                ["hapus","#", "trash-2", "Hapus", "danger","konfirmasiHapus('?pg=Kaset&fl=list&ak=hapus&id={$row['IdPegawai']}')"]
+            ]
+        );
+
+        $tr.=<<<tr
+            <tr class="group-hover-shadow">
+                <td class="ps-4 py-3">
+                    <div class="d-flex align-items-center">
+                        <div class="position-relative me-3">
+                            <img src="https://ui-avatars.com/api/?name={$row['Nama']}&background=random&color=fff" class="rounded-circle shadow-sm" style="width: 42px; height: 42px; font-size: 0.9rem;">
+                            <span class="position-absolute bottom-0 start-100 translate-middle p-1 bg-success border border-white rounded-circle"></span>
+                        </div>
+                        <div>
+                            <span class="text-muted small">{$row['Username']}</span>
+                            <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.95rem;">{$row['Nama']}</h6>
+                        </div>
+                    </div>
+                </td>
+                <td class="py-3 small">Admin</td>
+                <td class="pe-4 py-3 text-end">
+                    $Aksi
+                </td>
+            </tr>
+        tr;
+    }
+
+    
 
     PageContentTabel(
     <<<th
@@ -22,24 +47,7 @@
         <th class="pe-4 py-3 text-end text-uppercase text-secondary" style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;">Aksi</th>
     th,
     <<<Tr
-        <tr class="group-hover-shadow">
-            <td class="ps-4 py-3">
-                <div class="d-flex align-items-center">
-                    <div class="position-relative me-3">
-                        <img src="https://ui-avatars.com/api/?name=Nano Supriatna&background=random&color=fff" class="rounded-circle shadow-sm" style="width: 42px; height: 42px; font-size: 0.9rem;">
-                        <span class="position-absolute bottom-0 start-100 translate-middle p-1 bg-success border border-white rounded-circle"></span>
-                    </div>
-                    <div>
-                        <span class="text-muted small">nans</span>
-                        <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.95rem;">Nano</h6>
-                    </div>
-                </div>
-            </td>
-            <td class="py-3 small">Admin</td>
-            <td class="pe-4 py-3 text-end">
-                $Aksi
-            </td>
-        </tr>
+        $tr
     Tr,
     <<<knum
         <span class="text-muted small">Showing <strong>1-10</strong> of <strong>25</strong> users</span>

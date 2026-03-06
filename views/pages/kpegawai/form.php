@@ -1,4 +1,5 @@
 <?php
+
     PageHeader(
         "Pegawai",
         ($ak=="tambah")?"Tambahkan data baru pegawai":"Ubah data pegawai",
@@ -9,16 +10,16 @@
 
     PageContentForm(
         <<<a1
-            <form method="POST"> 
+            <form method="POST" autocomplate="off"> 
                 <div class="row g-4 mb-4">
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Username</label>
-                        <input type="text" name="username" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="Ex: ahmad_fauzi" style="border-radius: 10px;" required>
+                        <input type="text" name="username" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="Ex: ahmad_fauzi" style="border-radius: 10px;" value='$username' >
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Nama Lengkap</label>
-                        <input type="text" name="nama" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="Nama sesuai KTP" style="border-radius: 10px;" required>
+                        <input type="text" name="nama" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="Nama sesuai KTP" style="border-radius: 10px;" value='$nama'>
                     </div>
                 </div>
 
@@ -26,7 +27,7 @@
                     <label class="form-label fw-bold text-secondary mb-3" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Jenis Kelamin</label>
                     <div class="row g-3">
                         <div class="col-6">
-                            <input type="radio" class="btn-check" name="gender" id="genderL" value="L" checked>
+                            <input type="radio" class="btn-check" name="gender" id="genderL" value="L" $CGenderL>
                             <label class="btn btn-outline-light bg-light border-0 text-start w-100 p-3 d-flex align-items-center justify-content-between text-dark" for="genderL" style="border-radius: 12px; transition: all 0.2s;">
                                 <span class="d-flex align-items-center gap-2 fw-medium">
                                     <i data-lucide="user" class="text-primary" style="width: 18px;"></i> Laki-laki
@@ -35,7 +36,7 @@
                             </label>
                         </div>
                         <div class="col-6">
-                            <input type="radio" class="btn-check" name="gender" id="genderP" value="P">
+                            <input type="radio" class="btn-check" name="gender" id="genderP" value="P" $CGenderP>
                             <label class="btn btn-outline-light bg-light border-0 text-start w-100 p-3 d-flex align-items-center justify-content-between text-dark" for="genderP" style="border-radius: 12px; transition: all 0.2s;">
                                 <span class="d-flex align-items-center gap-2 fw-medium">
                                     <i data-lucide="user-circle-2" class="text-danger" style="width: 18px;"></i> Perempuan
@@ -50,7 +51,7 @@
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Tempat Lahir</label>
                         <div class="position-relative">
-                            <input type="text" name="tempat_lahir" class="form-control form-control-lg bg-light border-0 fs-6 ps-5" placeholder="Kota Kelahiran" style="border-radius: 10px;">
+                            <input type="text" name="tempat_lahir" class="form-control form-control-lg bg-light border-0 fs-6 ps-5" placeholder="Kota Kelahiran" style="border-radius: 10px;" value='$tempat_lahir'>
                             <div class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
                                 <i data-lucide="map-pin" style="width: 18px;"></i>
                             </div>
@@ -58,13 +59,13 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Tanggal Lahir</label>
-                        <input type="date" name="tanggal_lahir" class="form-control form-control-lg bg-light border-0 fs-6 text-secondary" style="border-radius: 10px;">
+                        <input type="date" name="tanggal_lahir" class="form-control form-control-lg bg-light border-0 fs-6 text-secondary" style="border-radius: 10px;" value='$tanggal_lahir'>
                     </div>
                 </div>
 
                 <div class="mb-4">
                     <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Alamat Domisili</label>
-                    <textarea name="alamat" class="form-control bg-light border-0 p-3" rows="3" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan..." style="border-radius: 12px; resize: none;"></textarea>
+                    <textarea name="alamat" class="form-control bg-light border-0 p-3" rows="3" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan..." style="border-radius: 12px; resize: none;">$alamat</textarea>
                 </div>
 
                 <div class="gap-2 pb-3">

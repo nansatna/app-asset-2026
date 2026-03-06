@@ -1,9 +1,4 @@
 <?php 
-    
-        $pg=$_GET['pg'];//page
-        $fl=$_GET['fl']; //file
-        $ak=$_GET['ak']; //aksi
-
         //untuk logout
         if($pg=='logout'){
             session_destroy();
@@ -52,6 +47,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <?= showAlert(); ?>
     <script src="assets/js/dashboard.js"></script>
     <script src="assets/js/qr-code.js"></script>
     <script src="assets/js/aksi.js"></script>
