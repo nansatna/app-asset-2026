@@ -3,7 +3,7 @@
     PageHeader(
         "Pegawai",
         ($ak=="tambah")?"Tambahkan data baru pegawai":"Ubah data pegawai",
-       buttonhref("?pg=$pg&fl=list","Kembali","primary","circle-chevron-left",$attbr="")
+       buttonhref("?pg=$pg&fl=list&hal=$hal","Kembali","primary","circle-chevron-left",$attbr="")
     );
 
     $BtnSimpan = button("btn","Simpan","primary","save","");

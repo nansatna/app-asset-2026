@@ -2,21 +2,20 @@
     PageHeader(
         "Pegawai",
         "Atur ulang kata sandi untuk pegawai",
-       buttonhref("?pg=$pg&fl=list","Kembali","primary","circle-chevron-left","")
+       buttonhref("?pg=$pg&fl=list&hal=$hal","Kembali","primary","circle-chevron-left","")
     );
 
-    $BtnSimpan = button("Btn","Simpan","primary","save","");
-    $BtnCetak = buttonhref("#","Cetak","info text-white","printer","onclick=\"cetakDariFile('kode','reset')\"");
+    $BtnSimpan = button("Btn","Reset","primary","refresh-cw","");
 
     PageContentForm(
         <<<a1
             <div class="d-flex align-items-center mb-4 p-3 rounded-3" style="background-color: #f8fafc; border: 1px dashed #cbd5e1;">
                 <div class="rounded-circle bg-white d-flex align-items-center justify-content-center border shadow-sm me-3" style="width: 48px; height: 48px;">
-                    <span class="fw-bold text-primary">JD</span> 
+                    <img src="https://ui-avatars.com/api/?name={$data['Nama']}&background=random&color=fff" class="rounded-circle shadow-sm" style="width: 42px; height: 42px; font-size: 0.9rem;">
                 </div>
                 <div>
-                    <h6 class="fw-bold text-dark mb-0">John Doe</h6>
-                    <span class="text-muted small">john.doe@kantor.com</span>
+                    <span class="text-muted small">{$data['Username']}</span>
+                    <h6 class="fw-bold text-dark mb-0">{$data['Nama']}</h6>
                 </div>
             </div>
 
@@ -27,8 +26,11 @@
                         <span class="input-group-text bg-light border-0 ps-3" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
                             <i data-lucide="lock" class="text-muted" style="width: 18px;"></i>
                         </span>
-                        <input type="password" name="new_password" id="passInput" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="Tekan tombol reset untuk mendapatkan kata sandi secara acak" readonly>
+                        <input type="text" name="new_password" id="passInput" class="form-control form-control-lg bg-light border-0 fs-6" readonly value="$new_password">
                     </div>
+                    <small class="text-danger mt-1 d-block">
+                        * Tekan tombol reset untuk mendapatkan kata sandi secara acak
+                    </small>
                 </div>
                 <div class="">
                     $BtnSimpan

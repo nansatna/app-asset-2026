@@ -15,9 +15,9 @@ function konfirmasiBatal(urlHapus) {
 }
 
 
-function cetakDariFile(id, jenis) {
+function cetakDariFile(link) {
     const frame = document.getElementById('frameCetak');
-    let fileTujuan = 'cetak.php?id=' + id + 'jenis=' + jenis;
+    let fileTujuan = 'cetak.php?' + link;
 
     // Arahkan iframe ke file yang dipilih
     frame.src = fileTujuan;

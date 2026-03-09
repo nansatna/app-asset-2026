@@ -3,18 +3,30 @@
     PageHeader(
         "Pegawai",
         "Pengelolaan data induk dan informasi profil pegawai",
-       buttonhref("?pg=$pg&fl=form&ak=tambah","Tambah","primary","circle-plus","")
+       buttonhref("?pg=$pg&fl=form&hal=$hal&ak=tambah","Tambah","primary","circle-plus","")
     );
 
     foreach ($semuaUser as $row) {
+        
+        if($row['StatusAktif'] === "1"){
+            $AksiAktif = ["","?pg=$pg&fl=$fl&hal=$hal&ak=noaktif&id={$row['IdPegawai']}", "x-circle", "Non-Aktif"];
+            $AksiReset = ["","?pg=$pg&fl=reset&hal=$hal&id={$row['IdPegawai']}", "key", "Reset"];
+        }else{
+            $AksiAktif = ["","?pg=$pg&fl=$fl&hal=$hal&ak=aktif&id={$row['IdPegawai']}", "check-circle-2", "Aktifkan"];
+            $AksiReset = ["disabled","?pg=$pg&fl=reset&hal=$hal&id={$row['IdPegawai']}", "key", "Reset"];
+        }
+
         $Aksi = AksiDropdown(
             [
-                ["","?pg=$pg&fl=form&ak=edit&id={$row['IdPegawai']}", "pencil", "Edit"],
-                ["","?pg=$pg&fl=reset&id={$row['IdPegawai']}", "key", "Reset"],
+                ["","?pg=$pg&fl=form&hal=$hal&ak=edit&id={$row['IdPegawai']}", "pencil", "Edit"],
+                $AksiReset,
+                $AksiAktif,
                 ["hr"],
-                ["hapus","#", "trash-2", "Hapus", "danger","konfirmasiHapus('?pg=Kaset&fl=list&ak=hapus&id={$row['IdPegawai']}')"]
+                ["hapus","#", "trash-2", "Hapus", "danger","konfirmasiHapus('?pg=$pg&fl=$fl&hal=$hal&ak=hapus&id={$row['IdPegawai']}')"]
             ]
         );
+
+        $StatusPegawai = StatusPegawai($row['StatusAktif'],$row['Sandi']);
 
         $tr.=<<<tr
             <tr class="group-hover-shadow">
@@ -30,7 +42,7 @@
                         </div>
                     </div>
                 </td>
-                <td class="py-3 small">Admin</td>
+                <td class="py-3 small">$StatusPegawai</td>
                 <td class="pe-4 py-3 text-end">
                     $Aksi
                 </td>
@@ -38,26 +50,17 @@
         tr;
     }
 
-    
-
     PageContentTabel(
     <<<th
         <th class="ps-4 py-3 text-uppercase text-secondary" style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;">Pegawai</th>
-        <th class="py-3 text-uppercase text-secondary" style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;">Role</th>
+        <th class="py-3 text-uppercase text-secondary" style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;">Status</th>
         <th class="pe-4 py-3 text-end text-uppercase text-secondary" style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;">Aksi</th>
     th,
     <<<Tr
         $tr
     Tr,
-    <<<knum
-        <span class="text-muted small">Showing <strong>1-10</strong> of <strong>25</strong> users</span>
-    knum,
-    <<<num
-        <li class="page-item disabled"><a class="page-link border-0" href="#">Prev</a></li>
-        <li class="page-item active"><a class="page-link border-0 bg-primary shadow-sm" href="#">1</a></li>
-        <li class="page-item"><a class="page-link border-0 text-secondary" href="#">2</a></li>
-        <li class="page-item"><a class="page-link border-0" href="#">Next</a></li>
-    num
+    pageNumberShowing($counttotal, $totalData),
+    pageNumber($halamanAktif,$totalHalaman,"pg=$pg&fl=$fl&hal=")
     );
 
     modalHapus();

@@ -1,6 +1,4 @@
 <?php
-    // echo password_hash('1234', PASSWORD_DEFAULT);
-    //$2y$10$b4ImlfzP1zEibaoy8P5gNulF1kIhrAGDJ970an16lLaiqf0L9rDZu
     $user = inputPost('user');
     $pwd = inputPost('pwd');
     $tombol = inputPost('tombol');
@@ -16,7 +14,7 @@
             {
                 $_SESSION['IdUser']=$DtUser['IdPegawai'];
                 $_SESSION['Status']='OKE';
-                setAlert("LoginBerhasil");
+                setAlert("LoginBerhasil",$DtUser['Nama']);
                 header('Location:index.php');
                 exit();
             }

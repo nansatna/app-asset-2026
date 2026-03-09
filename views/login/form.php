@@ -1,7 +1,7 @@
 <div class="col-lg-6 login-form-section">
     <div class="form-wrapper">
         <div class="brand-icon">
-            <center><img src="images/<?= $logo ?>" width="100"></center>
+            <center><img src="<?= $logo ?>" width="100"></center>
         </div>
         <div class='text-center'>
             <h2 class="fw-bold text-dark mb-2">Masuk ke Akun</h2>

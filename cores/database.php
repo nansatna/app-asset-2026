@@ -22,72 +22,113 @@ function connectDB() {
 
 // --- FUNGSI INSERT ---
 function insertData($koneksiku, $table, $data) {
-    // Mengambil nama kolom dari key array
-    $columns = implode(", ", array_keys($data));
-    
-    // Membuat placeholder (contoh: :nama, :email)
-    $placeholders = ":" . implode(", :", array_keys($data));
-    
-    $sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
-    
-    $stmt = $koneksiku->prepare($sql);
-    return $stmt->execute($data); // Mengembalikan true jika berhasil
+    try {
+        // Mengambil nama kolom dari key array
+        $columns = implode(", ", array_keys($data));
+        
+        // Membuat placeholder (contoh: :nama, :email)
+        $placeholders = ":" . implode(", :", array_keys($data));
+        
+        $sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
+        
+        $stmt = $koneksiku->prepare($sql);
+        return $stmt->execute($data); // Mengembalikan true jika berhasil
+    }
+    catch (PDOException $e) {
+        // Cek jika error disebabkan oleh data duplikat (Error code 23000)
+        return false;
+    }
 }
 
-// --- FUNGSI SELECT ---
-function selectData($koneksiku, $table, $conditions = []) {
-    $sql = "SELECT * FROM $table";
+function selectData($koneksiku, $table, $conditions = [], $columns = "*", $orderBy = null, $limit = null) {
+    // 1. Memproses kolom (bisa string "Nama, Email" atau fungsi agregat "COUNT(*)")
+    $columnString = is_array($columns) ? implode(", ", $columns) : $columns;
     
-    // Jika ada kondisi WHERE
+    $sql = "SELECT $columnString FROM $table";
+    $params = [];
+
+    // 2. Logika WHERE yang fleksibel (mendukung operator !=, <, >, dll)
     if (!empty($conditions)) {
         $whereClauses = [];
         foreach ($conditions as $key => $value) {
-            $whereClauses[] = "$key = :$key";
+            $key = trim($key);
+            if (strpos($key, ' ') !== false) {
+                // Mendukung "Status !=", "Gaji >", dll
+                $parts = explode(' ', $key);
+                $column = $parts[0];
+                $operator = $parts[1];
+                $whereClauses[] = "$column $operator :$column";
+                $params[$column] = $value;
+            } else {
+                // Default operator "="
+                $whereClauses[] = "$key = :$key";
+                $params[$key] = $value;
+            }
         }
         $sql .= " WHERE " . implode(" AND ", $whereClauses);
     }
-    
+
+    // 3. Tambahkan Order By dan Limit jika ada
+    if ($orderBy) $sql .= " ORDER BY $orderBy";
+    if ($limit)   $sql .= " LIMIT $limit";
+
     $stmt = $koneksiku->prepare($sql);
-    $stmt->execute($conditions);
+    $stmt->execute($params);
     
-    return $stmt->fetchAll(); // Mengembalikan data dalam bentuk array
+    // 4. Return Data
+    // Jika limit 1 dan hanya minta 1 kolom agregat, langsung kembalikan nilainya saja
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    return $result;
 }
 
 // --- FUNGSI UPDATE ---
 function updateData($koneksiku, $table, $data, $conditions) {
-    $setClauses = [];
-    $executeData = [];
-    
-    // Setup bagian SET
-    foreach ($data as $key => $value) {
-        $setClauses[] = "$key = :set_$key";
-        $executeData["set_$key"] = $value;
+    try{
+        $setClauses = [];
+        $executeData = [];
+        
+        // Setup bagian SET
+        foreach ($data as $key => $value) {
+            $setClauses[] = "$key = :set_$key";
+            $executeData["set_$key"] = $value;
+        }
+        
+        // Setup bagian WHERE
+        $whereClauses = [];
+        foreach ($conditions as $key => $value) {
+            $whereClauses[] = "$key = :cond_$key";
+            $executeData["cond_$key"] = $value;
+        }
+        
+        $sql = "UPDATE $table SET " . implode(", ", $setClauses) . " WHERE " . implode(" AND ", $whereClauses);
+        
+        $stmt = $koneksiku->prepare($sql);
+        return $stmt->execute($executeData); // Mengembalikan true jika berhasil
     }
-    
-    // Setup bagian WHERE
-    $whereClauses = [];
-    foreach ($conditions as $key => $value) {
-        $whereClauses[] = "$key = :cond_$key";
-        $executeData["cond_$key"] = $value;
+    catch (PDOException $e) {
+        // Cek jika error disebabkan oleh data duplikat (Error code 23000)
+        return false;
     }
-    
-    $sql = "UPDATE $table SET " . implode(", ", $setClauses) . " WHERE " . implode(" AND ", $whereClauses);
-    
-    $stmt = $koneksiku->prepare($sql);
-    return $stmt->execute($executeData); // Mengembalikan true jika berhasil
 }
 
 // --- FUNGSI DELETE ---
 function deleteData($koneksiku, $table, $conditions) {
-    $whereClauses = [];
-    
-    foreach ($conditions as $key => $value) {
-        $whereClauses[] = "$key = :$key";
+    try{
+        $whereClauses = [];
+        
+        foreach ($conditions as $key => $value) {
+            $whereClauses[] = "$key = :$key";
+        }
+        
+        $sql = "DELETE FROM $table WHERE " . implode(" AND ", $whereClauses);
+        
+        $stmt = $koneksiku->prepare($sql);
+        return $stmt->execute($conditions); // Mengembalikan true jika berhasil
     }
-    
-    $sql = "DELETE FROM $table WHERE " . implode(" AND ", $whereClauses);
-    
-    $stmt = $koneksiku->prepare($sql);
-    return $stmt->execute($conditions); // Mengembalikan true jika berhasil
+    catch (PDOException $e) {
+        // Cek jika error disebabkan oleh data duplikat (Error code 23000)
+        return false;
+    }
 }
 ?>

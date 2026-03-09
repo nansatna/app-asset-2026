@@ -11,6 +11,7 @@
         $pg = inputGet('pg'); //page
         $fl = inputGet('fl'); //file
         $ak = inputGet('ak'); //aksi
+        $hal = inputGet('hal'); //halaman
 
         include("controllers/pages/$pg/$fl.php");
         include("views/dashboard.php");

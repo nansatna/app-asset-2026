@@ -11,7 +11,7 @@
 
 <aside id="sidebar">
     <div class="sidebar-header">
-        <div class="brand-logo"><img src="images/<?= $logo ?>" width="50"></div>
+        <div class="brand-logo"><img src="<?= $logo ?>" width="50"></div>
         <span class="brand-text"><?= $AppNameShort ?></span>
     </div>
 

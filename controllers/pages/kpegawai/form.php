@@ -25,10 +25,10 @@
                 $simpan = insertData($koneksiku, 'pegawai', $dataBaru);
                 if($simpan){
                     setAlert("SimpanBerhasil");
-                    header("location:index.php?pg=$pg&fl=$fl&ak=$ak&id=$id");
+                    header("location:index.php?pg=$pg&fl=$fl&ak=$ak");
                     exit();
                 }else{
-                    showAlertGagal("SimpanGagal");
+                    showAlert1("SimpanGagal");
                 }
 
             break;
@@ -51,7 +51,7 @@
                     header("location:index.php?pg=$pg&fl=$fl&ak=$ak&id=$id");
                     exit();
                 }else{
-                    showAlertGagal("SimpanGagal");
+                    showAlert1("SimpanGagal");
                 }
                 
             break;

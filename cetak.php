@@ -1,56 +1,61 @@
+<?php
+    error_reporting(0);
+    session_start();
+    
+    if(empty($_SESSION['Status']) || $_SESSION['Status'] !== 'OKE'){
+        header("location:index.php");
+        exit();
+    }
 
+    include("cores/database.php");
+    include("cores/component.php");
+    include("app-config.php");
+
+    $pg = inputGet('pg'); //page
+    $fl = inputGet('fl'); //file
+    $ak = inputGet('ak'); //aksi
+
+    include("controllers/pages/$pg/$fl.php");
+?>
 
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Cetak Surat</title>
-    <style>
-        body { font-family: 'Times New Roman', serif; padding: 30px; }
-        .kop { text-align: center; border-bottom: 3px double #000; pb: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid black; padding: 8px; }
-    </style>
-</head>
-<body onload="window.print();">
-    <?php
-        // Ambil data dari database berdasarkan ID yang dikirim
-        $id = $_GET['id'];
-        // Contoh data dummy (Ganti dengan query database Anda)
-        $no_surat = "001/SR/2026";
-    ?>
-    <div class="kop">
-        <h2>PT. TEKNOLOGI INDONESIA</h2>
-        <p>Jl. Jenderal Sudirman No. 45, Jakarta</p>
-    </div>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title><?= $AppNameShort . " - " .$JdCetak ?></title>
+        <link rel="icon" type="image/png" href="images/<?= $logoico ?>">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            @media print {
+                @page {
+                    size: A4;
+                    margin: 0;
+                }
+                body {
+                    margin: 0;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+            }
 
-    <h3 style="text-align:center">BERITA ACARA SERAH TERIMA</h3>
-    <p>Nomor: <?= $no_surat ?></p>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
+        </style>
+    </head>
+    <body>
+        <script>
+            // Saat iframe dimuat, ubah judul halaman utama (parent)
+            window.onload = function() {
+                window.parent.document.title = "<?= $AppNameShort . " - " .$JdCetak ?>";
+            };
+        </script>
 
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Barang</th>
-                <th>Qty</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Laptop Asus (Contoh dari Database)</td>
-                <td>1 Unit</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <?php
-        error_reporting(0);
-        $id=$_GET['id'];
-        $jenis=$_GET['jenis'];
-        
-        echo "
-            $id - $jenis
-        "
-    ?>
-</body>
+        <div style="margin-left:30px;margin-right:30px">
+            <?php  
+                include("cetak/pages/$pg/$fl.php");
+            ?>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    </body>
 </html>

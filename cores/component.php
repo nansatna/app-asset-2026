@@ -65,6 +65,11 @@
                         <li><hr class="dropdown-divider my-1"></li>
                     a;
                 break;
+                case "disabled":
+                    $hasil.=<<<a
+                        <li><a href="{$Arli[1]}" class="dropdown-item small pe-none"><i data-lucide="{$Arli[2]}" style="width: 16px;" tabindex="-1" aria-disabled="true"></i> {$Arli[3]}</a></li>
+                    a;
+                break;
                 default :
                     $hasil .= <<<a
                         <li><a href="{$Arli[1]}" class="dropdown-item small"><i data-lucide="{$Arli[2]}" style="width: 16px;"></i> {$Arli[3]}</a></li>
@@ -107,7 +112,7 @@
             <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="background: #fff;">
                 <div class="card-body p-0">
                     <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
-                        <table class="table table-hover align-middle mb-0" style="border-collapse: collapse; white-space: nowrap;">
+                        <table class="table table-premium mb-0 align-middle" style="border-collapse: collapse; white-space: nowrap;">
                 
                             <thead class="bg-white border-bottom sticky-top" style="z-index: 10;">
                                 <tr>
@@ -240,14 +245,16 @@
 
 
     //Fungsi Alert
-    function setAlert($Jenis = null) {
+    function setAlert($Jenis = null, $Tambahan = null) {
         $daftar = [
             "LoginGagal"     => ["error", "Login Gagal", "Username atau Password salah!"],
-            "LoginBerhasil"  => ["success", "Login berhasil", "Selamat Datang pengguna"],
-            "SimpanBerhasil" => ["success", "Berhasil!", "Data telah disimpan"],
-            "SimpanGagal"    => ["error", "Gagal!", "Data gagal disimpan"],
-            "HapusBerhasil"  => ["success", "Terhapus!", "Data berhasil dihapus"],
-            "HapusGagal"     => ["warning", "Gagal Hapus", "Data tidak dapat dihapus"]
+            "LoginBerhasil"  => ["success", "Login berhasil", "Selamat Datang $Tambahan"],
+            "SimpanBerhasil" => ["success", "Berhasil", "Data telah disimpan"],
+            "SimpanGagal"    => ["error", "Gagal", "Data gagal disimpan"],
+            "HapusBerhasil"  => ["success", "Terhapus", "Data berhasil dihapus"],
+            "HapusGagal"     => ["warning", "Gagal Hapus", "Data tidak dapat dihapus"],
+            "AktifBerhasil"     => ["success", "Berhasil", "Pengguna <b class=\"text-danger\">$Tambahan</b> telah diaktifkan, <br>kemudian lakukan reset password"],
+            "NonAktifBerhasil"     => ["success", "Berhasil", "Pengguna <b class=\"text-danger\">$Tambahan</b> telah di non-aktifkan"],
         ];
 
         if (isset($daftar[$Jenis])) {
@@ -269,7 +276,7 @@
             $text  = $data['text'];
             
             // Logika timer otomatis untuk sukses
-            $timer = ($icon == 'success') ? "timer: 2000, showConfirmButton: false," : "showConfirmButton: true, confirmButtonColor: '#3085d6',";
+            $timer = ($icon == 'success') ? "showConfirmButton: true," : "showConfirmButton: true, confirmButtonColor: '#3085d6',";
 
             echo "
             <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
@@ -277,7 +284,7 @@
                 Swal.fire({
                     icon: '$icon',
                     title: '$title',
-                    text: '$text',
+                    html: '$text',
                     $timer
                 });
             </script>";
@@ -288,11 +295,14 @@
     }
 
     //Alert Gagal
-    function showAlertGagal($Jenis = null)
+    function showAlert1($Jenis = null)
     {
         $daftar = [
             "SimpanGagal" => ["error", "Gagal!", "Data gagal disimpan"],
-            "HapusGagal"  => ["warning", "Gagal Hapus", "Data tidak dapat dihapus"]
+            "HapusGagal"  => ["warning", "Gagal Hapus", "Data tidak dapat dihapus"],
+            "ResetBerhasil"  => ["success", "Berhasil", "Password telah diperbaharui"],
+            "ResetGagal"     => ["warning", "Reset", "Password gagal diperbaharui"]
+
         ];
 
         // Cek apakah Jenis yang diminta ada di dalam daftar
@@ -304,7 +314,7 @@
 
             // Tentukan konfigurasi tombol/timer
             $config = ($icon == 'success') 
-                    ? "timer: 2000, showConfirmButton: false" 
+                    ? "showConfirmButton: true" 
                     : "showConfirmButton: true, confirmButtonColor: '#3085d6'";
 
             echo "
@@ -320,6 +330,111 @@
                 });
             </script>";
         }
+    }
+
+    function randomPassword($length = 10) {
+        // Kumpulan karakter yang akan diacak
+        $comb = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $shfl = str_shuffle($comb);
+        $pwd  = substr($shfl, 0, $length);
+        
+        return $pwd;
+    }   
+
+    function AppKop($nama, $slogan, $alamat, $kontak, $logo_url) {
+        return "
+        <div style='display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 2px solid #f0f0f0; font-family: \"Inter\", sans-serif; color: #333;'>
+            <div style='display: flex; align-items: center; gap: 20px;'>
+                <div style='width: 60px; height: 60px; background: #f8f9fa; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden;'>
+                    <img src='$logo_url' alt='Logo' style='width: 80%; height: auto;'>
+                </div>
+                <div>
+                    <h1 style='margin: 0; font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px; color: #1a1a1a;'>$nama</h1>
+                    <p style='margin: 0; font-size: 0.85rem; color: #6c757d; font-weight: 500;'>$slogan</p>
+                </div>
+            </div>
+
+            <div style='text-align: right;'>
+                <p style='margin: 0; font-size: 0.8rem; font-weight: 600; color: #1a1a1a;'>$alamat</p>
+                <p style='margin: 4px 0 0 0; font-size: 0.75rem; color: #6c757d;'>$kontak</p>
+            </div>
+        </div>
+        <div style='height: 4px; width: 100px; background: linear-gradient(90deg, #007bff, #6610f2) !important; margin-top: -2px; border-radius: 0 0 4px 4px;'></div>
+        ";
+    }
+
+
+    function tgl_indo($tanggal) {
+        $bulan = [
+            1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        $pecahkan = explode('-', $tanggal);
+        
+        // $pecahkan[0] = Tahun, [1] = Bulan, [2] = Tanggal
+        return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
+    }
+
+
+   function StatusPegawai($status, $kunci="") {
+        if ($status == "1") {
+            // Hijau Emerald - Modern & Clean
+            $text = "Aktif";
+            if($kunci != ""){
+                $warna = "success";
+                $icon = "check-circle-2";
+            } else {
+                $warna = "warning";
+                $icon = "lock-keyhole";
+            }
+        } else {
+            // Merah Rose - Elegant Muted
+            $text = "Non-Aktif";
+            $warna = "danger";
+            $icon = "x-circle";
+        }
+
+        return "
+            <span class='badge-soft bg-soft-$warna'>
+                <i data-lucide='$icon' style='width: 14px; height: 14px; stroke-width: 3;'></i> $text
+            </span>
+        ";
+    }
+
+
+    function pageNumberShowing($counttotal="", $totalData="")
+    {
+        return <<<a
+            <span class="text-muted small">Showing <strong>$counttotal</strong> of <strong>$totalData</strong> users</span>
+        a;
+    }
+
+    function pageNumber($halamanAktif,$totalHalaman,$link)
+    {
+        
+        $prevdisabled = ($halamanAktif <= 1) ? 'disabled' : '';
+        $linkprev = $halamanAktif-1;
+        $nextdisabled = ($halamanAktif >= $totalHalaman) ? 'disabled' : '';
+        $linknext = $halamanAktif+1;
+        for ($i = 1; $i <= $totalHalaman; $i++){
+            if($halamanAktif == $i) {
+                $halactive = "active";
+                $warnatext = "bg-primary shadow-sm";
+            } else {
+                $halactive = "";
+                $warnatext = "text-secondary";
+            }
+
+            $number .= "
+                <li class='page-item $halactive'><a class='page-link border-0 $warnatext' href='?$link$i'>$i</a></li>
+            ";
+        }
+
+        return <<<a
+            <li class="page-item $prevdisabled"><a class="page-link border-0" href="?$link$linkprev">Prev</a></li>
+            $number
+            <li class="page-item $nextdisabled"><a class="page-link border-0" href="?$link$linknext">Next</a></li>
+        a;
     }
 
 ?>
