@@ -58,6 +58,7 @@
                         <tr>
                             <td class="ps-4 py-3 text-dark small">{$DtKategoriAset['KodeKategori']}</td>
                             <td class="ps-4 py-3 text-dark small">{$DtKategoriAset['NamaKategori']}</td>
+                            <td class="ps-4 py-3 text-dark small">{$DtKategoriAset['DeskripsiKategori']}</td>
                             <td class="pe-4 text-end">
                                 $BtnAksi
                             </td>
@@ -69,6 +70,7 @@
                     <<<th
                         <th class="ps-4 py-3 text-secondary small text-uppercase fw-bold">Kode</th>
                         <th class="ps-4 py-3 text-secondary small text-uppercase fw-bold">Kategori</th>
+                        <th class="ps-4 py-3 text-secondary small text-uppercase fw-bold">Deskripsi</th>
                         <th class="pe-4 py-3 text-end text-secondary small text-uppercase fw-bold">Aksi</th>
                     th,
                     $tr
