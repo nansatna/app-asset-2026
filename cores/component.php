@@ -405,7 +405,7 @@
     function pageNumberShowing($counttotal="", $totalData="")
     {
         return <<<a
-            <span class="text-muted small">Showing <strong>$counttotal</strong> of <strong>$totalData</strong> users</span>
+            <span class="text-muted small">Showing <strong>$counttotal</strong> of <strong>$totalData</strong> data</span>
         a;
     }
 

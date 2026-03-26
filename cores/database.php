@@ -131,4 +131,5 @@ function deleteData($koneksiku, $table, $conditions) {
         return false;
     }
 }
+
 ?>

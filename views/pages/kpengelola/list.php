@@ -10,6 +10,38 @@
 
             <?php
                 $BtnSimpan=button("Btn","Simpan","primary","save","");
+                //option pegawai
+                foreach($QSelPegawai as $OpSelPegawai){
+                    if($OpSelPegawai['IdPegawai'] == $pegawai)
+                    {
+                        $SelPegawai .= "
+                            <option value='{$OpSelPegawai['IdPegawai']}' selected>{$OpSelPegawai['Nama']}</option>
+                        ";
+                    }
+                    else
+                    {
+                        $SelPegawai .= "
+                            <option value='{$OpSelPegawai['IdPegawai']}'>{$OpSelPegawai['Nama']}</option>
+                        ";
+                    }
+                }
+
+                //option role
+                foreach($QSelRole as $OpSelRole){
+                    if($OpSelRole['IdRole'] == $role)
+                    {
+                        $SelRole .= "
+                            <option value='{$OpSelRole['IdRole']}' selected>{$OpSelRole['NamaRole']}</option>
+                        ";
+                    }
+                    else
+                    {
+                        $SelRole .= "
+                            <option value='{$OpSelRole['IdRole']}'>{$OpSelRole['NamaRole']}</option>
+                        ";
+                    }
+                }
+
                 PageContentForm(
                     <<<a
                          <form method="POST" autocomplete="off">
@@ -20,10 +52,7 @@
                                 </label>
                                 <select name="pegawai" class="form-select form-select-lg bg-light border-0 fs-6 text-dark" name="id_pegawai" style="cursor: pointer;">
                                     <option value="" selected disabled>-- Cari nama pegawai --</option>
-                                    <option value="1">Siti Nurhaliza (SN)</option>
-                                    <option value="2">John Doe (JD)</option>
-                                    <option value="3">Budi Santoso (BS)</option>
-                                    <option value="4">Dewi Persik (DP)</option>
+                                    $SelPegawai
                                 </select>
                             </div>
 
@@ -34,10 +63,7 @@
                                 
                                 <select class="form-select form-select-lg bg-light border-0 fs-6 text-dark" name="role" style="cursor: pointer;">
                                     <option value="" selected disabled>-- Tentukan Role --</option>
-                                    <option value="1">Admin Instansi</option>
-                                    <option value="2">Pengelola Aset</option>
-                                    <option value="3">Staf</option>
-                                    <option value="4">Teknisi</option>
+                                    $SelRole
                                 </select>
                                 <div class="form-text text-muted x-small ms-1 mt-2">
                                     <i data-lucide="info" style="width: 12px; margin-bottom: 1px;" class="me-1"></i>
@@ -59,13 +85,37 @@
         <div class="col-lg-8">
             
             <?php
-                $BtnAksi = AksiDropdown(
-                    [
-                        ["", "?pg=$pg&fl=$fl&ak=edit&id=xxx", "pencil", "Edit", "", "5=onclick"],
-                        ["hr"],
-                        ["hapus", "#", "trash-2", "Hapus", "danger", "konfirmasiHapus('?pg=$pg&fl=$fl&ak=hapus&id=XXXXX')"]
-                    ]
-                );
+
+                //Data Pengelola
+                foreach($QPengelola as $DtPengelola){
+                    $BtnAksi = AksiDropdown(
+                        [
+                            ["", "?pg=$pg&fl=$fl&hal=$hal&ak=edit&id={$DtPengelola['IdPengelola']}", "pencil", "Edit", "", "5=onclick"],
+                            ["hr"],
+                            ["hapus", "#", "trash-2", "Hapus", "danger", "konfirmasiHapus('?pg=$pg&fl=$fl&hal=$hal&ak=hapus&id={$DtPengelola['IdPengelola']}')"]
+                        ]
+                    );
+
+                    $tr.=<<<a
+                        <tr>
+                            <td class="ps-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="position-relative me-3">
+                                        <img src="https://ui-avatars.com/api/?name={$DtPengelola['Nama']}&background=random&color=fff" class="rounded-circle shadow-sm" style="width: 42px; height: 42px; font-size: 0.9rem;">
+                                        <span class="position-absolute bottom-0 start-100 translate-middle p-1 bg-success border border-white rounded-circle"></span>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.95rem;">{$DtPengelola['Nama']}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="small">{$DtPengelola['NamaRole']}</td>
+                            <td class="pe-4 text-end">
+                                $BtnAksi
+                            </td>
+                        </tr>
+                    a;
+                }
 
                 PageContentTabel(
                     <<<a
@@ -73,33 +123,10 @@
                         <th class="py-3 text-secondary small text-uppercase fw-bold">Role</th>
                         <th class="pe-4 py-3 text-end text-secondary small text-uppercase fw-bold">Aksi</th>
                     a,
-                    <<<a
-                         <tr>
-                            <td class="ps-4 py-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="position-relative me-3">
-                                        <img src="https://ui-avatars.com/api/?name=Nano Supriatna&background=random&color=fff" class="rounded-circle shadow-sm" style="width: 42px; height: 42px; font-size: 0.9rem;">
-                                        <span class="position-absolute bottom-0 start-100 translate-middle p-1 bg-success border border-white rounded-circle"></span>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.95rem;">Nano Supriatna</h6>
-                                        <span class="text-muted small">nans@gmail.com</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="small">Admin Instansi</td>
-                            <td class="pe-4 text-end">
-                                $BtnAksi
-                            </td>
-                        </tr>
-                    a,
+                    $tr
+                    ,
                     "&nbsp",
-                    <<<a
-                        <li class="page-item disabled"><a class="page-link border-0" href="#">Prev</a></li>
-                        <li class="page-item active"><a class="page-link border-0 bg-primary shadow-sm" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link border-0 text-secondary" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link border-0" href="#">Next</a></li>
-                    a
+                    pageNumber($halamanAktif,$totalHalaman,"pg=$pg&fl=$fl&hal=")
                 );
             ?>
 

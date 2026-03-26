@@ -18,17 +18,17 @@
                         
                             <div class="mb-4">
                                 <label class="form-label small fw-bold text-secondary text-uppercase" style="letter-spacing: 0.5px;">Kode</label>
-                                <input type="text" name="nama" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="Contoh : R001" style="border-radius: 10px;" required>
+                                <input type="text" name="kode" value='$kode' class="form-control form-control-lg bg-light border-0 fs-6" placeholder="Contoh : R001" style="border-radius: 10px;" required>
                             </div>
 
                             <div class="mb-4">
                                 <label class="form-label small fw-bold text-secondary text-uppercase" style="letter-spacing: 0.5px;">Nama</label>
-                                <input type="text" name="nama" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="" style="border-radius: 10px;" required>
+                                <input type="text" name="nama" value='$nama' class="form-control form-control-lg bg-light border-0 fs-6" placeholder="" style="border-radius: 10px;" required>
                             </div>
 
                             <div class="mb-4">
                                 <label class="form-label small fw-bold text-secondary text-uppercase" style="letter-spacing: 0.5px;">Deskripsi</label>
-                                <textarea name="alamat" class="form-control bg-light border-0 p-3" rows="3" style="border-radius: 12px; resize: none;"></textarea>
+                                <textarea name="deskripsi" class="form-control bg-light border-0 p-3" rows="3" style="border-radius: 12px; resize: none;">$deskripsi</textarea>
                             </div>
 
                             <div class="d-grid mt-5">
@@ -43,11 +43,27 @@
 
         <div class="col-lg-8">
             <?php
-                $BtnAksi = AksiDropdown([
-                    ["", "?pg=$pg&fl=$fl&ak=edit&id=xxxx", "pencil", "Eidt"],
-                    ["hr"],
-                    ["hapus", "#", "trash-2", "Hapus", "danger", "konfirmasiHapus('?pg=kkategori&fl=list&aksi=hapus&id=XXXXX')"]
-                ]);
+
+                
+
+                foreach($QKategoriAset as $DtKategoriAset){
+
+                    $BtnAksi = AksiDropdown([
+                        ["", "?pg=$pg&fl=$fl&hal=$hal&ak=edit&id={$DtKategoriAset['IdKategoriAset']}", "pencil", "Edit"],
+                        ["hr"],
+                        ["hapus", "#", "trash-2", "Hapus", "danger", "konfirmasiHapus('?pg=$pg&fl=$fl&hal=$hal&ak=hapus&id={$DtKategoriAset['IdKategoriAset']}')"]
+                    ]);
+
+                    $tr.=<<<a
+                        <tr>
+                            <td class="ps-4 py-3 text-dark small">{$DtKategoriAset['KodeKategori']}</td>
+                            <td class="ps-4 py-3 text-dark small">{$DtKategoriAset['NamaKategori']}</td>
+                            <td class="pe-4 text-end">
+                                $BtnAksi
+                            </td>
+                        </tr>
+                    a;
+                }
 
                 PageContentTabel(
                     <<<th
@@ -55,24 +71,10 @@
                         <th class="ps-4 py-3 text-secondary small text-uppercase fw-bold">Kategori</th>
                         <th class="pe-4 py-3 text-end text-secondary small text-uppercase fw-bold">Aksi</th>
                     th,
-                    <<<tr
-                        <tr>
-                            <td class="ps-4 py-3 fw-bold text-dark small">R001</td>
-                            <td class="ps-4 py-3 fw-bold text-dark small">Kelas X</td>
-                            <td class="pe-4 text-end">
-                                $BtnAksi
-                            </td>
-                        </tr>
-                    tr,
-                    <<<knum
-                        <span class="text-muted small">Showing <strong>1-10</strong> of <strong>25</strong> users</span>
-                    knum,
-                    <<<li
-                        <li class="page-item disabled"><a class="page-link border-0" href="#">Prev</a></li>
-                        <li class="page-item active"><a class="page-link border-0 bg-primary shadow-sm" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link border-0 text-secondary" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link border-0" href="#">Next</a></li>
-                    li
+                    $tr
+                    ,
+                    pageNumberShowing($CountTotal, $totalData),
+                    pageNumber($halamanAktif,$totalHalaman,"pg=$pg&fl=$fl&hal=")
                 );
             ?>
         </div>
